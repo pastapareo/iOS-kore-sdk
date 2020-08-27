@@ -15,7 +15,7 @@ import Mantle
     func rtmConnectionReady()
     func rtmConnectionDidClose(_ code: Int, reason: String?)
     func rtmConnectionDidFailWithError(_ error: NSError)
-    @objc optional func didReceiveMessage(_ message: BotMessageModel)
+    @objc optional func didReceiveMessage(_ message: String)
     @objc optional func didReceiveMessageAck(_ ack: Ack)
     func didReceivedUserMessage(_ userMessageDict:[String:Any])
 }
@@ -189,9 +189,8 @@ open class RTMPersistentConnection : NSObject, SRWebSocketDelegate {
             guard let array = responseObject["message"] as? Array<[String: Any]>, array.count > 0 else {
                 return
             }
-            if let model = try? MTLJSONAdapter.model(of: BotMessageModel.self, fromJSONDictionary: responseObject), let botMessageModel = model as? BotMessageModel {
-                connectionDelegate?.didReceiveMessage?(botMessageModel)
-            }
+            connectionDelegate?.didReceiveMessage?(message)
+            
         case "user_message":
             connectionDelegate?.didReceivedUserMessage(responseObject)
 //            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "User_Message_Received"), object: responseObject)

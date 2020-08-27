@@ -58,7 +58,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     open var connectionReady: (() -> Void)?
     open var connectionDidClose: ((Int?, String?) -> Void)?
     open var connectionDidFailWithError: ((NSError?) -> Void)?
-    open var onMessage: ((BotMessageModel?) -> Void)?
+    open var onMessage: ((String?) -> Void)?
     open var onMessageAck: ((Ack?) -> Void)?
     open var onUserMessageReceived:(([String:Any])-> Void)?
     open var botsUrl: String {
@@ -212,7 +212,7 @@ open class BotClient: NSObject, RTMPersistentConnectionDelegate {
     open func didReceivedUserMessage(_ usrMessage:[String:Any]) {
         onUserMessageReceived?(usrMessage)
     }
-    open func didReceiveMessage(_ message: BotMessageModel) {
+    open func didReceiveMessage(_ message: String) {
         onMessage?(message)
     }
     
